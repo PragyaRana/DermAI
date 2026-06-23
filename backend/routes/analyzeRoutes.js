@@ -69,10 +69,11 @@ function mockAI(imageUrl) {
 
 async function geminiAnalysis(imageUrl) {
   const genAI  = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  const model  = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model  = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
   const prompt = `
-    You are a professional dermatologist AI. Analyse this skin photo and return ONLY valid JSON with this exact structure:
+    You are a professional dermatologist AI. Analyze the uploaded skin photo and return a comprehensive analysis.
+    Return ONLY a valid JSON response with this exact structure:
     {
       "scores": { "overall": 70, "acne": 65, "glow": 68, "hydration": 62, "youth": 72, "symmetry": 75 },
       "skin_age": 25,
@@ -85,6 +86,11 @@ async function geminiAnalysis(imageUrl) {
       "product_recommendations": [{ "type": "Cleanser", "name": "...", "reason": "..." }],
       "doctor_consultation": { "required": false, "reason": null }
     }
+
+    Notes:
+    - skin_type MUST be one of: "normal", "oily", "dry", "combination", "sensitive".
+    - Make sure the overall and category scores, skin age, skin type, issues, remedies, routines, and recommendations are dynamically and realistically calculated based on the skin conditions observed in the photo.
+    - Do not copy the placeholder numbers or text from the structure above; they are only for structural template reference.
   `;
 
   const response = await fetch(imageUrl);

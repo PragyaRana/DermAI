@@ -1,4 +1,5 @@
 import "dotenv/config"; // MUST be the very first import — loads .env before anything else
+// Server entry point
 
 import express from "express";
 import mongoose from "mongoose";
