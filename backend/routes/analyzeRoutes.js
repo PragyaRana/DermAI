@@ -7,7 +7,10 @@ import User from "../models/User.js";
 const router = express.Router();
 
 function mockAI(imageUrl) {
-  const s = imageUrl.length % 40;
+  let s = 0;
+  for (let i = 0; i < imageUrl.length; i++) {
+    s += imageUrl.charCodeAt(i);
+  }
   const v = (b, r) => Math.min(100, Math.max(10, b + (s % r) - r / 2));
   return {
     scores: { overall: v(68,30), acne: v(62,38), glow: v(65,28), hydration: v(63,32), youth: v(71,26), symmetry: v(76,18) },
@@ -69,7 +72,6 @@ function mockAI(imageUrl) {
 
 async function geminiAnalysis(imageUrl) {
   const genAI  = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  const model  = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
   const prompt = `
     You are a professional dermatologist AI. Analyze the uploaded skin photo and return a comprehensive analysis.
@@ -98,14 +100,31 @@ async function geminiAnalysis(imageUrl) {
   const base64   = Buffer.from(buffer).toString("base64");
   const mimeType = "image/jpeg";
 
-  const result = await model.generateContent([
-    prompt,
-    { inlineData: { data: base64, mimeType } }
-  ]);
+  // Try multiple models in order as a fallback chain to bypass quota limits
+  const models = ["gemini-2.0-flash", "gemini-2.5-flash-lite", "gemini-3.5-flash", "gemini-2.0-flash-lite"];
+  let lastError;
 
-  const text = result.response.text();
-  const clean = text.replace(/```json|```/g, "").trim();
-  return JSON.parse(clean);
+  for (const modelName of models) {
+    try {
+      console.log(`Trying Gemini model: ${modelName}`);
+      const model = genAI.getGenerativeModel({ model: modelName });
+      const result = await model.generateContent([
+        prompt,
+        { inlineData: { data: base64, mimeType } }
+      ]);
+      const text = result.response.text();
+      const clean = text.replace(/```json|```/g, "").trim();
+      const parsed = JSON.parse(clean);
+      console.log(`✅ Gemini succeeded with model: ${modelName}`);
+      return parsed;
+    } catch (err) {
+      console.log(`⚠️ Gemini model ${modelName} failed:`, err.message);
+      lastError = err;
+    }
+  }
+
+  // Rethrow the last error if all models in the chain fail
+  throw lastError;
 }
 
 router.post("/", protect, async (req, res) => {
