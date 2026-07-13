@@ -1,6 +1,6 @@
 # ✨ DermAI — AI Skin Analysis (MERN Stack)
 
-## Project Structure
+## Project Structure -----
 ```
 dermai/
 ├── backend/          ← Node.js + Express + MongoDB
