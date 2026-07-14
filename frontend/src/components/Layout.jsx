@@ -17,7 +17,7 @@ export default function Layout() {
 
   return (
     <div className="layout">
-      {/* ── Sidebar ─────────────────────────── */}
+      {/* ── Sidebar ───────────────────── */}
       <aside className="sidebar">
         <div className="sidebar-logo">
           <div className="dot" />
