@@ -75,7 +75,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Progress chart */}
+        {/* Progress chart-- */}
         <div className="card" style={{ padding:24 }}>
           <h3 style={{ fontFamily:"'Playfair Display',serif", fontSize:20, marginBottom:20 }}>Skin Score Progress</h3>
           {chartData.length > 0 ? (
