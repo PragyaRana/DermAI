@@ -84,7 +84,7 @@ export default function Landing() {
         </div>
       </nav>
 
-      {/* Hero-- */}
+      {/* Hero */}
       <section style={S.hero}>
         <div style={S.badge}>✨ AI-Powered Skincare Analysis</div>
         <h1 style={S.h1}>
