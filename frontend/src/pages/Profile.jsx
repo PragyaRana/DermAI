@@ -34,7 +34,7 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* --Info rows */}
+        {/* Info rows */}
         {info.map(({ label, value }) => (
           <div key={label} style={{
             display:'flex', justifyContent:'space-between', alignItems:'center',
