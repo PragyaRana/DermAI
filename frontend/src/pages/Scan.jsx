@@ -57,7 +57,7 @@ export default function Scan() {
       <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:42, marginBottom:6 }}>Scan Your Skin</h1>
       <p style={{ color:'var(--muted)', marginBottom:32, fontSize:15 }}>Upload a clear, well-lit photo of your face for best results</p>
 
-      {/* ──--- Preview state ─────────────────── */}
+      {/* ── Preview state ─────────────────── */}
       {mode === 'preview' && (
         <div className="card" style={{ padding:24, marginBottom:20 }}>
           <div style={{ position:'relative', borderRadius:12, overflow:'hidden', marginBottom:16 }}>
