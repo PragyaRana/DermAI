@@ -135,7 +135,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* --CTA */}
+      {/* CTA */}
       <button className="btn btn-primary" onClick={() => navigate('/scan')}
         style={{ marginTop:24, padding:'14px 32px', fontSize:15 }}>
         ◎ Start New Skin Scan →
